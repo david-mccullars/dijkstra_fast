@@ -24,8 +24,10 @@ module DijkstraFast
   ##
   class Graph
 
+    include DijkstraFast::ShortestPath
+
     def initialize
-      @nodes = {}
+      @edges = {}
     end
 
     # Adds a weighted edge to the graph. This represents a possible path from the
@@ -36,27 +38,15 @@ module DijkstraFast
     #                           If not provided, a default distance of `1` is used.
     # @return [nil]
     def add(source, dest, distance: 1)
-      _add_edge(node(source), node(dest), distance) unless source == dest
+      return if source == dest
+
+      @edges[source] ||= []
+      @edges[source] << [dest, distance]
     end
 
-    # Finds the shortest path between items, returning both the path as well as
-    # the total distance travelled.
-    # @param source [Object] Any Ruby object that represents the source item
-    # @param dest [Object] Any Ruby object that represents the destination item
-    # @return [BestPath]
-    def shortest_path(source, dest)
-      best_path = BestPath.new
-      best_path.distance = _shortest_path(node(source), node(dest), best_path.path)
-      if best_path.path.empty? || best_path.distance.nil? || best_path.distance < 0
-        raise NoPathExistsError
-      end
-      best_path
-    end
-
-    private
-
-    def node(obj)
-      @nodes[obj] ||= @nodes.size # Auto-increment id
+    def connections(source, &block)
+      @edges[source]&.each(&block)
+      nil
     end
 
   end

@@ -6,12 +6,12 @@ describe DijkstraFast::Graph do
   end
 
   specify 'other' do
-    subject.add("A", "B", distance: 5)
-    subject.add("A", "C", distance: 8)
-    subject.add("B", "C", distance: 2)
-    best_path = subject.shortest_path("A", "C")
-    expect(best_path.path).to eq(["A", "B", "C"])
-    expect(best_path.distance).to eq(7)
+    subject.add('A', 'B', distance: 5)
+    subject.add('A', 'C', distance: 8)
+    subject.add('B', 'C', distance: 2)
+    distance, path = subject.shortest_path('A', 'C')
+    expect(path).to eq(%w[A B C])
+    expect(distance).to eq(7)
   end
 
   context :integers do
@@ -35,33 +35,33 @@ describe DijkstraFast::Graph do
     end
 
     specify '1 to 4' do
-      best_path = subject.shortest_path(1, 4)
-      expect(best_path.distance).to eq(25)
-      expect(best_path.path).to eq([1, 2, 4])
+      distance, path = subject.shortest_path(1, 4)
+      expect(distance).to eq(25)
+      expect(path).to eq([1, 2, 4])
     end
 
     specify '1 to 5' do
-      best_path = subject.shortest_path(1, 5)
-      expect(best_path.distance).to eq(55)
-      expect(best_path.path).to eq([1, 2, 4, 5])
+      distance, path = subject.shortest_path(1, 5)
+      expect(distance).to eq(55)
+      expect(path).to eq([1, 2, 4, 5])
     end
 
     specify '2 to 5' do
-      best_path = subject.shortest_path(2, 5)
-      expect(best_path.distance).to eq(45)
-      expect(best_path.path).to eq([2, 4, 5])
+      distance, path = subject.shortest_path(2, 5)
+      expect(distance).to eq(45)
+      expect(path).to eq([2, 4, 5])
     end
 
     specify '1 to 8' do
-      best_path = subject.shortest_path(1, 8)
-      expect(best_path.distance).to eq(80)
-      expect(best_path.path).to eq([1, 2, 4, 5, 8])
+      distance, path = subject.shortest_path(1, 8)
+      expect(distance).to eq(80)
+      expect(path).to eq([1, 2, 4, 5, 8])
     end
 
     specify '1 to 1' do
-      best_path = subject.shortest_path(1, 1)
-      expect(best_path.distance).to eq(0)
-      expect(best_path.path).to eq([1])
+      distance, path = subject.shortest_path(1, 1)
+      expect(distance).to eq(0)
+      expect(path).to eq([1])
     end
   end
 
@@ -86,49 +86,49 @@ describe DijkstraFast::Graph do
     end
 
     specify "'A' to 'D'" do
-      best_path = subject.shortest_path('A', 'D')
-      expect(best_path.distance).to eq(25)
-      expect(best_path.path).to eq(%w[A B D])
+      distance, path = subject.shortest_path('A', 'D')
+      expect(distance).to eq(25)
+      expect(path).to eq(%w[A B D])
     end
 
     specify "'A' to 'E'" do
-      best_path = subject.shortest_path('A', 'E')
-      expect(best_path.distance).to eq(55)
-      expect(best_path.path).to eq(%w[A B D E])
+      distance, path = subject.shortest_path('A', 'E')
+      expect(distance).to eq(55)
+      expect(path).to eq(%w[A B D E])
     end
 
     specify "'B' to 'E'" do
-      best_path = subject.shortest_path('B', 'E')
-      expect(best_path.distance).to eq(45)
-      expect(best_path.path).to eq(%w[B D E])
+      distance, path = subject.shortest_path('B', 'E')
+      expect(distance).to eq(45)
+      expect(path).to eq(%w[B D E])
     end
 
     specify "'A' to 'H'" do
-      best_path = subject.shortest_path('A', 'H')
-      expect(best_path.distance).to eq(80)
-      expect(best_path.path).to eq(%w[A B D E H])
+      distance, path = subject.shortest_path('A', 'H')
+      expect(distance).to eq(80)
+      expect(path).to eq(%w[A B D E H])
     end
 
     specify "'A' to 'A'" do
-      best_path = subject.shortest_path('A', 'A')
-      expect(best_path.distance).to eq(0)
-      expect(best_path.path).to eq(%w[A])
+      distance, path = subject.shortest_path('A', 'A')
+      expect(distance).to eq(0)
+      expect(path).to eq(%w[A])
     end
   end
 
   context :errors do
     specify 'no such destination' do
-      subject.add("A", "B", distance: 5)
-      subject.add("A", "C", distance: 8)
-      subject.add("B", "C", distance: 2)
-      expect { subject.shortest_path("A", "Z") }.to raise_error(DijkstraFast::NoPathExistsError)
+      subject.add('A', 'B', distance: 5)
+      subject.add('A', 'C', distance: 8)
+      subject.add('B', 'C', distance: 2)
+      expect { subject.shortest_path('A', 'Z') }.to raise_error(DijkstraFast::NoPathExistsError)
     end
 
     specify 'no such source' do
-      subject.add("A", "B", distance: 5)
-      subject.add("A", "C", distance: 8)
-      subject.add("B", "C", distance: 2)
-      expect { subject.shortest_path("Z", "C") }.to raise_error(DijkstraFast::NoPathExistsError)
+      subject.add('A', 'B', distance: 5)
+      subject.add('A', 'C', distance: 8)
+      subject.add('B', 'C', distance: 2)
+      expect { subject.shortest_path('Z', 'C') }.to raise_error(DijkstraFast::NoPathExistsError)
     end
 
     specify 'no path between source and destination' do

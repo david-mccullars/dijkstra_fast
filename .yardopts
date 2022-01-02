@@ -1,0 +1,7 @@
+--readme README.md
+--title 'Dijkstra (Fast!) Documentation'
+--charset utf-8
+--markup-provider=redcarpet
+--markup markdown
+--exclude lib/dijkstra_fast/native.rb
+'lib/**/*.rb' - '*.md'

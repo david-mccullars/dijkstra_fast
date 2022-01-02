@@ -16,13 +16,25 @@
 ## Description
 
 [Dijkstra](https://en.wikipedia.org/wiki/Dijkstra's_algorithm) is a commonly
-used algorithm for finding the shortest path through a graph or network.
+used algorithm for finding the shortest path/distance between two items in an
+interconnected collection of items (such as a graph or network).
 
 
 ## Features
 
 * Native implementation of Dijkstra's algorithm intended for use on large,
-sparse graphs for which an array of arrays is inefficient.
+typically sparse graphs.
+* Allows for calculating shortest distance without requiring all nodes/edges to
+be produced. (In many applications doing this can be more expensive than
+Dijkstra's algorithm itself - or even impractical.)
+* Can be used in one of three ways:
+  * __Method 1__: Use an instance of `DijkstraFast::Graph` by adding edges to
+  it.
+  * __Method 2__: Add `shortest_path` and `shortest_distance` methods to an
+  existing class by including the `DijkstraFast::ShortestPath` module.
+  * __Method 3__: Call `DijkstraFast::ShortestPath.shortest_path` or
+  `DijkstraFast::ShortestPath.shortest_distance` directly when the `source` and
+  `dest` objects know how to find "connected" items via some method.
 
 
 ## Installation
@@ -35,26 +47,108 @@ gem install dijkstra_fast
 
 * Ruby 3.0 or higher
 
+
 ## Usage
 
-**Dijkstra**
+### Method 1: Use `DijkstraFast::Graph`
 
 ```ruby
-require 'dijkstra_fast'
-
 graph = DijkstraFast::Graph.new
 graph.add("A", "B", distance: 5)
 graph.add("A", "C", distance: 8)
 graph.add("B", "C", distance: 2)
-best_path = graph.shortest_path("A", "C")
-best_path.path
+distance, path = graph.shortest_path("A", "C")
+path
 
 => ["A", "B", "C"]
 
-best_path.distance
+distance
 
 => 7
 ```
+
+### Method 2: Include `DijkstraFast::ShortestPath`
+
+```ruby
+class MyNetwork
+  include DijkstraFast::ShortestPath
+
+  def connections(source)
+    case source
+    when "A"
+      yield "B", 3
+      yield "C", 8
+    when "B"
+      yield "C" # Default distance 1
+    end
+  end
+end
+
+distance, path = MyNetwork.new.shortest_path("A", "C")
+path
+
+=> ["A", "B", "C"]
+
+distance
+
+=> 4
+```
+
+### Method 3: Call `DijkstraFast.shortest_path` or `DijkstraFast.shortest_distance`
+
+```ruby
+Node = Struct.new(:label) do
+  def connections
+    case label
+    when "A"
+      yield Node.new("B"), 5
+      yield Node.new("C"), 8
+    when "B"
+      yield Node.new("C"), 2
+    end
+  end
+end
+
+a = Node.new("A")
+b = Node.new("B")
+c = Node.new("C")
+
+distance, path = DijkstraFast.shortest_path(a, c)
+path.map(&:label)
+
+=> ["A", "B", "C"]
+
+distance
+
+=> 7
+```
+
+
+## Additional Notes
+
+* When using arbitrary Ruby objects as graph nodes, it is important to ensure
+that [Object#hash](https://ruby-doc.org/core-3.1.0/Object.html#method-i-hash)
+and [Object#eql?](https://ruby-doc.org/core-3.1.0/Object.html#method-i-eql-3F)
+are properly implemented so that two instances which are logically the same
+will be considered as the same node.  Under the hood, this gem creates a
+bi-directional mapping between nodes and an auto-incrementing integer id so
+that Ruby objects do not have to be passed into the internals of the native
+implementation; doing so would risk problems with garbage collection and is
+otherwise frowned upon when implementing native extensions.
+* All `shortest_path` and `shortest_distance` methods provide an optional
+`progress` named argument which (when set to anything truthy) will provide
+progress as the algorithm proceeds.  The default implementation uses the
+[progressbar](https://github.com/jfelchner/ruby-progressbar/wiki) gem, but this
+is not required.
+* The maximum number of items that can be handled by this implementation is
+determined by the size of `unsigned long` which is compiler dependent.  On many
+machines this can be 18,446,744,073,709,551,615 (2^64 – 1). A
+[RuntimeError](https://ruby-doc.org/core-3.1.0/RuntimeError.html) will be
+thrown if this is surpassed; if so, congratulations on being bad ass!
+* A priority queue is used within the native Dijkstra implemenation to maintain
+the next shortest path to consider within the algorithm's main loop. It is
+possible that switching to a [Fibonacci
+heap](https://en.wikipedia.org/wiki/Fibonacci_heap) might improve performance.
 
 
 ## License

@@ -1,5 +1,5 @@
-#include <dijkstra_graph.h>
+#include <native.h>
 
 void Init_dijkstra_fast() {
-  Init_dijkstra_graph();
+  Init_native_shortest_path();
 }
