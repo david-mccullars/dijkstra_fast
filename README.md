@@ -11,6 +11,7 @@
 [![Travis Build Status](https://travis-ci.org/david-mccullars/dijkstra_fast.svg?branch=master)](https://travis-ci.org/david-mccullars/dijkstra_fast)
 [![Code Climate](https://codeclimate.com/github/david-mccullars/dijkstra_fast/badges/gpa.svg)](https://codeclimate.com/github/david-mccullars/dijkstra_fast)
 [![Test Coverage](https://codeclimate.com/github/david-mccullars/dijkstra_fast/badges/coverage.svg)](https://codeclimate.com/github/david-mccullars/dijkstra_fast/coverage)
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 
 ## Description
