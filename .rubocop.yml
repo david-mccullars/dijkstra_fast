@@ -1,9 +1,8 @@
 AllCops:
   Exclude:
-  - dijkstra.gemspec
-  - Rakefile
   - ext/**/*
   - tmp/**/*
+  - vendor/**/*
 Gemspec/DateAssignment:
   Enabled: true
 Gemspec/RequireMFA:
@@ -101,6 +100,8 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 30
   Enabled: false
+Naming/BlockForwarding:
+  Enabled: true
 Security/IoMethods:
   Enabled: true
 Security/MarshalLoad:
@@ -123,6 +124,10 @@ Style/EndlessMethod:
   Enabled: true
 Style/ExponentialNotation:
   Enabled: true
+Style/FileRead:
+  Enabled: true
+Style/FileWrite:
+  Enabled: true
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/GuardClause:
@@ -144,6 +149,8 @@ Style/IfUnlessModifier:
 Style/IfWithBooleanLiteralBranches:
   Enabled: true
 Style/InPatternThen:
+  Enabled: true
+Style/MapToHash:
   Enabled: true
 Style/MultilineBlockChain:
   Enabled: false

@@ -12,16 +12,14 @@ void swap_prioritized_items(PrioritizedItem *items, unsigned long i, unsigned lo
 }
 
 void reprioritize_right(PrioritizedItem *items, unsigned long i, unsigned long size) {
-  PRIORITY i_priority, j_priority_left, j_priority_right;
-  unsigned long j_left, j_right;
-  i_priority = items[i]->priority;
+  PRIORITY i_priority = items[i]->priority;
 
   while (true) {
-    j_left = (i << 1) + 1;
-    j_right = j_left + 1;
+    unsigned long j_left = (i << 1) + 1;
+    unsigned long j_right = j_left + 1;
 
-    j_priority_left = j_left < size ? items[j_left]->priority : PRIORITY_MAX;
-    j_priority_right = j_right < size ? items[j_right]->priority : PRIORITY_MAX;
+    PRIORITY j_priority_left = j_left < size ? items[j_left]->priority : PRIORITY_MAX;
+    PRIORITY j_priority_right = j_right < size ? items[j_right]->priority : PRIORITY_MAX;
 
     if (j_priority_right < i_priority && j_priority_right < j_priority_left) {
       swap_prioritized_items(items, i, j_right);
@@ -38,13 +36,11 @@ void reprioritize_right(PrioritizedItem *items, unsigned long i, unsigned long s
 }
 
 void reprioritize_left(PrioritizedItem *items, unsigned long i) {
-  PRIORITY i_priority, j_priority;
-  unsigned long j;
-  i_priority = items[i]->priority;
+  PRIORITY i_priority = items[i]->priority;
 
   while (i > 0) {
-    j = (i - 1) >> 1;
-    j_priority = items[j]->priority;
+    unsigned long j = (i - 1) >> 1;
+    PRIORITY j_priority = items[j]->priority;
 
     if (j_priority > i_priority) {
       swap_prioritized_items(items, i, j);
@@ -78,7 +74,7 @@ bool priority_queue_is_empty(PriorityQueue pq) {
 }
 
 void priority_queue_push(PriorityQueue pq, ITEM object, PRIORITY priority) {
-  PrioritizedItem item = malloc(sizeof(PrioritizedItem));
+  PrioritizedItem item = malloc(sizeof(PrioritizedItemStruct));
   item->item = object;
   item->priority = priority;
 
