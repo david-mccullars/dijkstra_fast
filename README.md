@@ -8,7 +8,7 @@
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/dijkstra_fast.svg)](https://badge.fury.io/rb/dijkstra_fast)
-[![Travis Build Status](https://travis-ci.org/david-mccullars/dijkstra_fast.svg?branch=master)](https://travis-ci.org/david-mccullars/dijkstra_fast)
+[![Build Status](https://github.com/david-mccullars/dijkstra_fast/workflows/CI/badge.svg)](https://github.com/david-mccullars/dijkstra_fast/actions?workflow=CI)
 [![Code Climate](https://codeclimate.com/github/david-mccullars/dijkstra_fast/badges/gpa.svg)](https://codeclimate.com/github/david-mccullars/dijkstra_fast)
 [![Test Coverage](https://codeclimate.com/github/david-mccullars/dijkstra_fast/badges/coverage.svg)](https://codeclimate.com/github/david-mccullars/dijkstra_fast/coverage)
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
