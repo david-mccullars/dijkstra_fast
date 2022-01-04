@@ -50,18 +50,21 @@ module DijkstraFast
 
     def create_progress_bar(config)
       require 'progressbar' unless defined?(ProgressBar)
-      return ProgressBar.create(config) if config.is_a?(Hash)
+      config = progress_bar_config(config) unless config.is_a?(Hash)
+      ProgressBar.create(config)
+    rescue LoadError
+      raise LoadError, 'The default implementation of progress reporting requires the progressbar gem'
+    end
 
-      format = config.is_a?(String) ? config : "%a %b\u{15E7}%i %p%% %t"
-      ProgressBar.create(
+    def progress_bar_config(format)
+      format = "%a %b\u{15E7}%i %p%% %t" unless format.is_a?(String)
+      {
         format:         format,
         progress_mark:  ' ',
         remainder_mark: "\u{FF65}",
         total:          100,
         autofinish:     false,
-      )
-    rescue LoadError
-      raise LoadError, 'The default implementation of progress reporting requires the progressbar gem'
+      }
     end
 
   end
