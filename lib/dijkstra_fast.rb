@@ -66,8 +66,8 @@ module DijkstraFast
   # @return [Array<int, Array>]
   def self.shortest_path(source, dest, connections: 'connections', progress: false)
     clazz = Class.new { include DijkstraFast::ShortestPath }
-    clazz.define_method(:connections) do |source, &block|
-      source.send(connections, &block)
+    clazz.define_method(:connections) do |u, &block|
+      u.send(connections, &block)
     end
     clazz.new.shortest_path(source, dest, progress: progress)
   end

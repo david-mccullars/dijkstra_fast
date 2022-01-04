@@ -9,11 +9,11 @@ describe DijkstraFast do
     AbcNode = Struct.new(:label) do
       def connections
         case label
-        when "A"
-          yield AbcNode.new("B"), 5
-          yield AbcNode.new("C"), 8
-        when "B"
-          yield AbcNode.new("C"), 2
+        when 'A'
+          yield AbcNode.new('B'), 5
+          yield AbcNode.new('C'), 8
+        when 'B'
+          yield AbcNode.new('C'), 2
         end
       end
     end unless defined?(AbcNode)
@@ -31,19 +31,22 @@ describe DijkstraFast do
   end
 
   context :progress do
+    let(:progress_bar_class) do
+      Class.new do
+        def clear; end
+        def total=(val); end
+        def progress=(val); end
+      end
+    end
     let(:progress_bar) { ProgressBar.new }
     let(:config) { { format: '%a %bᗧ%i %p%% %t', progress_mark: ' ', remainder_mark: '･', total: 100, autofinish: false } }
 
     before do
       # Dummy version instead of from gem
-      class ProgressBar
-        def clear; end
-        def total=(v); end
-        def progress=(v); end
-      end
+      ProgressBar = progress_bar_class unless defined?(ProgressBar)
     end
 
-    specify :true do
+    specify true do
       expect(ProgressBar).to receive(:create).with(config).and_return(progress_bar)
       [[1, 3], [2, 4]].each do |p, t|
         expect(progress_bar).to receive(:progress=).with(p)
