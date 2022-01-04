@@ -19,9 +19,14 @@ describe DijkstraFast::ShortestPath do
     end.new
   end
 
-  specify 'included' do
+  specify :shortest_path do
     distance, path = subject.shortest_path('A', 'C')
     expect(path).to eq(%w[A B C])
+    expect(distance).to eq(7)
+  end
+
+  specify :shortest_distance do
+    distance = subject.shortest_distance('A', 'C')
     expect(distance).to eq(7)
   end
 end
