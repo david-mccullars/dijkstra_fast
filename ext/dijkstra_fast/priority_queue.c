@@ -12,7 +12,6 @@ void swap_prioritized_items(PrioritizedItem *items, unsigned long i, unsigned lo
 }
 
 void reprioritize_right(PrioritizedItem *items, unsigned long i, unsigned long size) {
-  unsigned long orig_i = i;
   PRIORITY i_priority, j_priority_left, j_priority_right;
   unsigned long j_left, j_right;
   i_priority = items[i]->priority;
@@ -75,7 +74,7 @@ void free_priority_queue(PriorityQueue pq) {
 }
 
 bool priority_queue_is_empty(PriorityQueue pq) {
-  return pq->size == 0 ? Qtrue : Qfalse;
+  return pq->size == 0 ? true : false;
 }
 
 void priority_queue_push(PriorityQueue pq, ITEM object, PRIORITY priority) {
